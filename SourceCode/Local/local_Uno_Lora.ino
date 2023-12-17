@@ -9,7 +9,7 @@
 #define TXpin 11
 #define RXpin 10
 #define WATER_LIMIT 200
-#define GAS_LIMIT 300
+#define GAS_LIMIT 260
 
 
 //16byte hex key
@@ -63,11 +63,6 @@ void setup() {
   pinMode(A1A, OUTPUT);
   pinMode(A1B, OUTPUT);
 
-    /* SNIPE LoRa Initialization */
-  // if (!SNIPE.lora_init()) {
-  //   Serial.println("SNIPE LoRa Initialization Fail!");
-  //   while (1);
-  // }
   DebugSerial.println("Start");
 
 }
@@ -80,12 +75,7 @@ void loop() {
   if (Serial.available() > 0) {
       Serial.flush();
       String receivedString = Serial.readStringUntil('\n');
-
-      // if(SNIPE.lora_send(receivedString)){
-      //   // DebugSerial.println("send success");
-      //   // String ver = SNIPE.lora_recv();
-      //   // Serial.println(ver);
-      // }
+    
       int firstIndex = receivedString.indexOf(' '); // 첫 번째 공백의 위치 찾기
       int secondIndex = receivedString.indexOf(' ', firstIndex + 1);  // 두 번째 공백의 위치 찾기
       String first = receivedString.substring(0, firstIndex); // 첫 번째 문자열
@@ -96,13 +86,7 @@ void loop() {
       int gas_state = second.toInt(); // 일산화탄소 상태값
       int flame_state = third.toInt();   // 불꽃 감지 상태값
 
-      /* 워터 작동 조건 (Real) */
-      // if((gas_state >= GAS_LIMIT)&&(flame_state == 1)){
-      //   waterPumper_activate();
-      // }
-
-      /* 워터 작동 조건(test) */
-      if(water_state >= 300){
+      if((gas_state >= GAS_LIMIT)&&(flame_state == 1)){
         waterPumper_activate();
         delay(3000);
         DebugSerial.println("water state = " + String(water_state) + "   gas state = " + String(gas_state) + "   flame state = " + String(flame_state));
