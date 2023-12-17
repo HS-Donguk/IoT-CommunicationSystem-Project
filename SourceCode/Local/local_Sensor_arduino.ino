@@ -32,20 +32,19 @@ void loop() {
   int gas_main= gasfunc();
   boolean flame_main = flamefunc();
   
-  //Boozer condition(물 수위 150 이하면 부저 울림)
+  //Boozer condition(물 수위 270 이하면 부저 울림)
   if (water_main <= 270){
     digitalWrite(buzzer_PIN, HIGH);
     delay(1000);
     digitalWrite(buzzer_PIN, LOW);
   }
-  // water pump condition (가스 280 이상 또는 불꽃 감지하면 워터펌프 동작)
+  // water pump condition (가스 265 이상 또는 불꽃 감지하면 워터펌프 동작)
   if(gas_main >= 265 || flame_main == 1){
     waterPumper_activate();
   }
 
   String temp = String(water_main)+ " "+String(gas_main)+ " "+ String(flame_main);
   Serial.println(temp);
-  
   
   delay(500);
 }
